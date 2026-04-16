@@ -3,10 +3,11 @@ const inputTasksElement = document.querySelector("#taskInput");
 const addTasksButtonElement = document.querySelector('#addBtn')
 const errorMessageElement = document.querySelector('#errorMessage')
 const tasksListElement = document.querySelector('#taskList')
+const totalCountElement = document.querySelector('#totalCount')
 let newTask
 let markupDeleteIcon
 let markupUpdateIcon
-const deleteButtonElement = document.querySelector('#deleteBtn')
+
 
 function addTask(){
     markupDeleteIcon =
@@ -22,6 +23,8 @@ function addTask(){
         </div>
         </li>`;
     tasksListElement.insertAdjacentHTML("afterbegin", newTask);
+    let current = Number(totalCountElement.textContent);
+    totalCountElement.textContent = current + 1;
 }
 
 addTasksButtonElement.addEventListener('click', () => {
@@ -32,6 +35,15 @@ addTasksButtonElement.addEventListener('click', () => {
     }
 })
 
-//=========================SET TASKS section=========================
-
-
+//=========================DELETE TASKS section=========================
+tasksListElement.addEventListener('click',(event) => {
+    const deleteBtn = event.target.closest(".todo__btn--delete");
+    if(deleteBtn){
+        const li = deleteBtn.closest(".todo__item");
+        li.remove();
+        let current = Number(totalCountElement.textContent);
+        totalCountElement.textContent = current - 1;
+    }else{
+        
+    }
+})
