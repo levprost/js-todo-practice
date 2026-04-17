@@ -4,6 +4,7 @@ const addTasksButtonElement = document.querySelector('#addBtn')
 const errorMessageElement = document.querySelector('#errorMessage')
 const tasksListElement = document.querySelector('#taskList')
 const totalCountElement = document.querySelector('#totalCount')
+const completedListElement = document.querySelector('#completedList')
 let newTask
 let markupDeleteIcon
 let markupUpdateIcon
@@ -35,15 +36,27 @@ addTasksButtonElement.addEventListener('click', () => {
     }
 })
 
-//=========================DELETE TASKS section=========================
-tasksListElement.addEventListener('click',(event) => {
-    const deleteBtn = event.target.closest(".todo__btn--delete");
-    if(deleteBtn){
-        const li = deleteBtn.closest(".todo__item");
-        li.remove();
-        let current = Number(totalCountElement.textContent);
-        totalCountElement.textContent = current - 1;
-    }else{
-        
+//=========================DELETE TASKS AND COMPLETE section=========================
+
+function removeTask(todoItem){
+    todoItem.remove();
+    let current = Number(totalCountElement.textContent);
+    totalCountElement.textContent = current - 1;
+}
+
+function updateTask(todoItem){
+    todoItem.classList.add("completed");
+    completedListElement.insertAdjacentHTML("afterbegin", todoItem.outerHTML);
+    todoItem.remove();
+}
+
+document.addEventListener('click',(event) => {
+    const button = event.target
+    const todoItem = button.closest(".todo__item");
+    if (button.closest(".todo__btn--delete")) {
+      removeTask(todoItem)
+    }
+    if (button.closest(".todo__btn--update")) {
+      updateTask(todoItem)
     }
 })

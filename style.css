@@ -31,3 +31,6 @@
 .todo__btn--update {
   color: green;
 }
+.completed .todo__actions .todo__btn--update{
+    display: none;
+}
