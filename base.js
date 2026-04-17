@@ -1,4 +1,3 @@
-//==========================ADD TASKS section=====================
 const tasksSectionElement = document.querySelector('#taskSection')
 const inputTasksElement = document.querySelector("#taskInput");
 const addTasksButtonElement = document.querySelector('#addBtn')
@@ -11,7 +10,18 @@ const clearAllButtonElement = document.querySelector('#clearAll')
 const clearCompletedButtonElement = document.querySelector('#clearCompleted')
 
 
+//==========================Count tasks function======================
+let countTasks
+let countCompletedTasks;
 
+function updateCount(){
+    countTasks = tasksListElement.querySelectorAll('li').length
+    countCompletedTasks = completedListElement.querySelectorAll('li').length
+    totalCountElement.textContent = Number(countCompletedTasks + countTasks)
+    totalCompletedCountElement.textContent = Number(countCompletedTasks)
+}
+
+//==========================ADD TASKS section=====================
 function addTask(){
     markupDeleteIcon =
       '<button id="deleteBtn" class="todo__btn todo__btn--delete"><i class="fa-solid fa-trash-can"></i></button>';
@@ -26,8 +36,7 @@ function addTask(){
         </div>
         </li>`;
     tasksListElement.insertAdjacentHTML("afterbegin", newTask);
-    let current = Number(totalCountElement.textContent);
-    totalCountElement.textContent = current + 1;
+    updateCount();
 }
 
 addTasksButtonElement.addEventListener('click', () => {
@@ -42,16 +51,14 @@ addTasksButtonElement.addEventListener('click', () => {
 
 function removeTask(todoItem){
     todoItem.remove();
-    let current = Number(totalCountElement.textContent);
-    totalCountElement.textContent = current - 1;
+    updateCount();
 }
 
 function updateTask(todoItem){
     todoItem.classList.add("completed");
     completedListElement.insertAdjacentHTML("afterbegin", todoItem.outerHTML);
     todoItem.remove();
-    let current = Number(totalCompletedCountElement.textContent)
-    totalCompletedCountElement.textContent = current + 1;
+    updateCount();
 }
 
 tasksSectionElement.addEventListener('click',(event) => {
@@ -62,6 +69,7 @@ tasksSectionElement.addEventListener('click',(event) => {
     }
     if (button.closest(".todo__btn--update")) {
       updateTask(todoItem)
+
     }
 })
 
@@ -70,10 +78,9 @@ tasksSectionElement.addEventListener('click',(event) => {
 clearAllButtonElement.addEventListener("click", () => {
     tasksListElement.replaceChildren();
     completedListElement.replaceChildren()
-    totalCountElement.textContent = 0;
-    totalCompletedCountElement.textContent = 0;
+    updateCount();
 });
 clearCompletedButtonElement.addEventListener("click", () => {
     completedListElement.replaceChildren();
-    totalCompletedCountElement.textContent = 0;
+    updateCount();
 })
