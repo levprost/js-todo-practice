@@ -1,13 +1,15 @@
 //==========================ADD TASKS section=====================
+const tasksSectionElement = document.querySelector('#taskSection')
 const inputTasksElement = document.querySelector("#taskInput");
 const addTasksButtonElement = document.querySelector('#addBtn')
 const errorMessageElement = document.querySelector('#errorMessage')
 const tasksListElement = document.querySelector('#taskList')
 const totalCountElement = document.querySelector('#totalCount')
+const totalCompletedCountElement = document.querySelector("#completedCount");
 const completedListElement = document.querySelector('#completedList')
-let newTask
-let markupDeleteIcon
-let markupUpdateIcon
+const clearAllButtonElement = document.querySelector('#clearAll')
+const clearCompletedButtonElement = document.querySelector('#clearCompleted')
+
 
 
 function addTask(){
@@ -48,9 +50,11 @@ function updateTask(todoItem){
     todoItem.classList.add("completed");
     completedListElement.insertAdjacentHTML("afterbegin", todoItem.outerHTML);
     todoItem.remove();
+    let current = Number(totalCompletedCountElement.textContent)
+    totalCompletedCountElement.textContent = current + 1;
 }
 
-document.addEventListener('click',(event) => {
+tasksSectionElement.addEventListener('click',(event) => {
     const button = event.target
     const todoItem = button.closest(".todo__item");
     if (button.closest(".todo__btn--delete")) {
@@ -59,4 +63,17 @@ document.addEventListener('click',(event) => {
     if (button.closest(".todo__btn--update")) {
       updateTask(todoItem)
     }
+})
+
+//========================Clear all and Clear completed Tasks========================
+
+clearAllButtonElement.addEventListener("click", () => {
+    tasksListElement.replaceChildren();
+    completedListElement.replaceChildren()
+    totalCountElement.textContent = 0;
+    totalCompletedCountElement.textContent = 0;
+});
+clearCompletedButtonElement.addEventListener("click", () => {
+    completedListElement.replaceChildren();
+    totalCompletedCountElement.textContent = 0;
 })
