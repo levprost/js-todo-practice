@@ -11,8 +11,6 @@ const clearCompletedButtonElement = document.querySelector('#clearCompleted')
 
 
 //==========================Count tasks function======================
-let countTasks
-let countCompletedTasks;
 
 function updateCount(){
     countTasks = tasksListElement.querySelectorAll('li').length
@@ -24,9 +22,9 @@ function updateCount(){
 //==========================ADD TASKS section=====================
 function addTask(){
     markupDeleteIcon =
-      '<button id="deleteBtn" class="todo__btn todo__btn--delete"><i class="fa-solid fa-trash-can"></i></button>';
+      '<button class="todo__btn todo__btn--delete"><i class="fa-solid fa-trash-can"></i></button>';
     markupUpdateIcon =
-      '<button id="updateBtn" class="todo__btn todo__btn--update""><i class="fa-solid fa-circle-check"></i></button>';
+      '<button class="todo__btn todo__btn--update""><i class="fa-solid fa-circle-check"></i></button>';
     newTask = `
         <li class="todo__item">
         <span class="todo__text">${inputTasksElement.value}</span>
@@ -56,8 +54,7 @@ function removeTask(todoItem){
 
 function updateTask(todoItem){
     todoItem.classList.add("completed");
-    completedListElement.insertAdjacentHTML("afterbegin", todoItem.outerHTML);
-    todoItem.remove();
+    completedListElement.prepend(todoItem);//replace an element
     updateCount();
 }
 
@@ -69,7 +66,6 @@ tasksSectionElement.addEventListener('click',(event) => {
     }
     if (button.closest(".todo__btn--update")) {
       updateTask(todoItem)
-
     }
 })
 
